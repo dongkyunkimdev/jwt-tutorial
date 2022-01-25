@@ -10,12 +10,11 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Authority {
 
 	@Id
-	@Column(length = 50)
+	@Column(name = "authority_name", length = 50)
 	private String authorityName;
 
 	@Builder
