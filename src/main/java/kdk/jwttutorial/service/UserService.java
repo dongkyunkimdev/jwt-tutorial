@@ -1,10 +1,10 @@
 package kdk.jwttutorial.service;
 
 import java.util.Collections;
-import java.util.Optional;
 import kdk.jwttutorial.dto.UserDto;
 import kdk.jwttutorial.entity.Authority;
 import kdk.jwttutorial.entity.User;
+import kdk.jwttutorial.exception.DuplicateMemberException;
 import kdk.jwttutorial.repository.UserRepository;
 import kdk.jwttutorial.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class UserService {
 	public UserDto signup(UserDto userDto) {
 		if (userRepository.findOneWithAuthoritiesByUsername(userDto.getUsername()).orElse(null)
 			!= null) {
-			throw new RuntimeException("이미 가입되어 있는 유저입니다.");
+			throw new DuplicateMemberException("이미 가입되어 있는 유저입니다: " + userDto.getUsername());
 		}
 
 		Authority authority = Authority.builder()
