@@ -7,20 +7,17 @@ import kdk.jwttutorial.entity.Authority;
 import kdk.jwttutorial.entity.User;
 import kdk.jwttutorial.repository.UserRepository;
 import kdk.jwttutorial.util.SecurityUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
-
-	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-		this.userRepository = userRepository;
-		this.passwordEncoder = passwordEncoder;
-	}
 
 	@Transactional
 	public User signup(UserDto userDto) {

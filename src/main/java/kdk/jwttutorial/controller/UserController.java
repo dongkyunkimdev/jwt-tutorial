@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import kdk.jwttutorial.dto.UserDto;
 import kdk.jwttutorial.entity.User;
 import kdk.jwttutorial.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,13 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class UserController {
 
 	private final UserService userService;
-
-	public UserController(UserService userService) {
-		this.userService = userService;
-	}
 
 	@PostMapping("/signup")
 	public ResponseEntity<User> signup(

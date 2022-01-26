@@ -5,6 +5,7 @@ import kdk.jwttutorial.dto.LoginDto;
 import kdk.jwttutorial.dto.TokenDto;
 import kdk.jwttutorial.jwt.JwtFilter;
 import kdk.jwttutorial.jwt.TokenProvider;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,16 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class AuthController {
 
 	private final TokenProvider tokenProvider;
 	private final AuthenticationManagerBuilder authenticationManagerBuilder;
-
-	public AuthController(TokenProvider tokenProvider,
-		AuthenticationManagerBuilder authenticationManagerBuilder) {
-		this.tokenProvider = tokenProvider;
-		this.authenticationManagerBuilder = authenticationManagerBuilder;
-	}
 
 	@PostMapping("/authenticate")
 	public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto) {
