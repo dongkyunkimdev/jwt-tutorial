@@ -1,5 +1,6 @@
 package kdk.jwttutorial.dto;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.AccessLevel;
@@ -16,7 +17,8 @@ public class LoginDto {
 
 	@NotNull
 	@Size(min = 3, max = 50)
-	private String username;
+	@Email
+	private String email;
 
 	@NotNull
 	@Size(min = 3, max = 100)

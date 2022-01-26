@@ -24,8 +24,8 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long userId;
 
-	@Column(length = 50, unique = true)
-	private String username;
+	@Column(length = 100, unique = true)
+	private String email;
 
 	@Column(length = 100)
 	private String password;
@@ -47,7 +47,7 @@ public class User {
 	public User(Long userId, String username, String password, String nickname, boolean activated,
 		Set<Authority> authorities) {
 		this.userId = userId;
-		this.username = username;
+		this.email = username;
 		this.password = password;
 		this.nickname = nickname;
 		this.activated = activated;

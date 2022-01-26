@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import kdk.jwttutorial.entity.User;
@@ -20,8 +21,9 @@ import lombok.NoArgsConstructor;
 public class UserDto {
 
 	@NotNull
-	@Size(min = 3, max = 50)
-	private String username;
+	@Size(min = 3, max = 100)
+	@Email
+	private String email;
 
 	@JsonProperty(access = Access.WRITE_ONLY)
 	@NotNull
@@ -40,7 +42,7 @@ public class UserDto {
 		}
 
 		return UserDto.builder()
-			.username(user.getUsername())
+			.email(user.getEmail())
 			.nickname(user.getNickname())
 			.authorityDtoSet(user.getAuthorities().stream()
 				.map(authority -> AuthorityDto.builder().authorityName(authority.getAuthorityName())
