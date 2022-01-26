@@ -1,4 +1,4 @@
-package kdk.jwttutorial.dto;
+package kdk.jwttutorial.exception.dto;
 
 import lombok.Getter;
 

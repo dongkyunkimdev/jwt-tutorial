@@ -1,10 +1,10 @@
-package kdk.jwttutorial.service;
+package kdk.jwttutorial.security;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
-import kdk.jwttutorial.entity.User;
-import kdk.jwttutorial.repository.UserRepository;
+import kdk.jwttutorial.user.User;
+import kdk.jwttutorial.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

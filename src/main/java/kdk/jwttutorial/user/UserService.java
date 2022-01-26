@@ -1,12 +1,10 @@
-package kdk.jwttutorial.service;
+package kdk.jwttutorial.user;
 
 import java.util.Collections;
-import kdk.jwttutorial.dto.UserDto;
-import kdk.jwttutorial.entity.Authority;
-import kdk.jwttutorial.entity.User;
+import kdk.jwttutorial.user.dto.UserDto;
+import kdk.jwttutorial.auth.Authority;
 import kdk.jwttutorial.exception.DuplicateMemberException;
-import kdk.jwttutorial.repository.UserRepository;
-import kdk.jwttutorial.util.SecurityUtil;
+import kdk.jwttutorial.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

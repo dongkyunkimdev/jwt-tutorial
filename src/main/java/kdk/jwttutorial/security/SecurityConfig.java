@@ -1,9 +1,9 @@
-package kdk.jwttutorial.config;
+package kdk.jwttutorial.security;
 
-import kdk.jwttutorial.jwt.JwtAccessDeniedHandler;
-import kdk.jwttutorial.jwt.JwtAuthenticationEntryPoint;
-import kdk.jwttutorial.jwt.JwtSecurityConfig;
-import kdk.jwttutorial.jwt.TokenProvider;
+import kdk.jwttutorial.security.JwtAccessDeniedHandler;
+import kdk.jwttutorial.security.JwtAuthenticationEntryPoint;
+import kdk.jwttutorial.security.JwtSecurityConfig;
+import kdk.jwttutorial.security.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;

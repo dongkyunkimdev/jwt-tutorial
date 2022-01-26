@@ -1,7 +1,6 @@
-package kdk.jwttutorial.repository;
+package kdk.jwttutorial.user;
 
 import java.util.Optional;
-import kdk.jwttutorial.entity.User;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 

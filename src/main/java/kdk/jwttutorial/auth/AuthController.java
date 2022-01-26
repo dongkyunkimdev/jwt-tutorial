@@ -1,10 +1,10 @@
-package kdk.jwttutorial.controller;
+package kdk.jwttutorial.auth;
 
 import javax.validation.Valid;
-import kdk.jwttutorial.dto.LoginDto;
-import kdk.jwttutorial.dto.TokenDto;
-import kdk.jwttutorial.jwt.JwtFilter;
-import kdk.jwttutorial.jwt.TokenProvider;
+import kdk.jwttutorial.user.dto.LoginDto;
+import kdk.jwttutorial.auth.dto.TokenDto;
+import kdk.jwttutorial.security.JwtFilter;
+import kdk.jwttutorial.security.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

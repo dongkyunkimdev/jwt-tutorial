@@ -1,9 +1,9 @@
-package kdk.jwttutorial.controller;
+package kdk.jwttutorial.user;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import kdk.jwttutorial.dto.UserDto;
-import kdk.jwttutorial.service.UserService;
+import kdk.jwttutorial.user.dto.UserDto;
+import kdk.jwttutorial.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

@@ -1,4 +1,4 @@
-package kdk.jwttutorial.dto;
+package kdk.jwttutorial.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
@@ -7,7 +7,8 @@ import java.util.stream.Collectors;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import kdk.jwttutorial.entity.User;
+import kdk.jwttutorial.auth.dto.AuthorityDto;
+import kdk.jwttutorial.user.User;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

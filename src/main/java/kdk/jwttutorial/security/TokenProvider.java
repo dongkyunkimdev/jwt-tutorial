@@ -1,4 +1,4 @@
-package kdk.jwttutorial.jwt;
+package kdk.jwttutorial.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;

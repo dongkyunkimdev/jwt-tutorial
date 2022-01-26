@@ -1,9 +1,9 @@
-package kdk.jwttutorial.hadnler;
+package kdk.jwttutorial.exception.handler;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 import java.util.List;
-import kdk.jwttutorial.dto.ErrorDto;
+import kdk.jwttutorial.exception.dto.ErrorDto;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.validation.BindingResult;

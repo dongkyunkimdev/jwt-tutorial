@@ -1,8 +1,8 @@
-package kdk.jwttutorial.hadnler;
+package kdk.jwttutorial.exception.handler;
 
 import static org.springframework.http.HttpStatus.CONFLICT;
 
-import kdk.jwttutorial.dto.ErrorDto;
+import kdk.jwttutorial.exception.dto.ErrorDto;
 import kdk.jwttutorial.exception.DuplicateMemberException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

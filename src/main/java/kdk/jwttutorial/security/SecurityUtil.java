@@ -1,4 +1,4 @@
-package kdk.jwttutorial.util;
+package kdk.jwttutorial.security;
 
 import java.util.Optional;
 import lombok.extern.log4j.Log4j2;

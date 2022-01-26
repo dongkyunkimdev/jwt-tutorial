@@ -1,4 +1,4 @@
-package kdk.jwttutorial.entity;
+package kdk.jwttutorial.user;
 
 import java.util.Set;
 import javax.persistence.Column;
@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import kdk.jwttutorial.auth.Authority;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
