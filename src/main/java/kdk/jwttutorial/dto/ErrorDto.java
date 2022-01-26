@@ -9,15 +9,15 @@ import org.springframework.validation.FieldError;
 public class ErrorDto {
 	private final int status;
 	private final String message;
-	private List<FieldError> fieldErrors = new ArrayList<>();
+	private List<FieldErrorDto> fieldErrors = new ArrayList<>();
 
 	public ErrorDto(int status, String message) {
 		this.status = status;
 		this.message = message;
 	}
 
-	public void addFieldError(String objectName, String path, String message) {
-		FieldError error = new FieldError(objectName, path, message);
+	public void addFieldError(String path, String message) {
+		FieldErrorDto error = new FieldErrorDto(path, message);
 		fieldErrors.add(error);
 	}
 }
