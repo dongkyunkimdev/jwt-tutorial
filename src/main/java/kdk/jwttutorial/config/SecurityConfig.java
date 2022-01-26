@@ -40,8 +40,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	@Override
-	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity
+	protected void configure(HttpSecurity http) throws Exception {
+		http
 			// token을 사용하는 방식이기 때문에 csrf를 disable
 			.csrf().disable()
 
