@@ -25,6 +25,12 @@ public class JwtFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
 		FilterChain chain) throws ServletException, IOException {
+		if (request.getServletPath().equals("/user/login") || request.getServletPath()
+			.equals("/user/signup") || request.getServletPath().equals("/token/refresh")) {
+			chain.doFilter(request, response);
+			return;
+		}
+
 		String jwt = resolveToken(request);
 		String requestURI = request.getRequestURI();
 
