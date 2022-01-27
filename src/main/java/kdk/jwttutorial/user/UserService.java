@@ -1,11 +1,12 @@
 package kdk.jwttutorial.user;
 
 import java.util.Collections;
-import kdk.jwttutorial.user.dto.UserDto;
-import kdk.jwttutorial.security.auth.Authority;
 import kdk.jwttutorial.exception.DuplicateMemberException;
 import kdk.jwttutorial.security.SecurityUtil;
+import kdk.jwttutorial.security.auth.Authority;
+import kdk.jwttutorial.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,4 +50,12 @@ public class UserService {
 		return UserDto.from(SecurityUtil.getCurrentUsername()
 			.flatMap(userRepository::findOneWithAuthoritiesByEmail).orElse(null));
 	}
+
+	@Transactional
+	public User getUser(String email) {
+		return userRepository.findOneWithAuthoritiesByEmail(email).orElseThrow(
+			() -> new UsernameNotFoundException("존재하지 않는 사용자입니다.")
+		);
+	}
+
 }

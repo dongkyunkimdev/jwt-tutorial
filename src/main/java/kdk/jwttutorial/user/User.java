@@ -25,13 +25,13 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long userId;
 
-	@Column(length = 100, unique = true)
+	@Column(nullable = false, length = 100, unique = true)
 	private String email;
 
-	@Column(length = 100)
+	@Column(nullable = false, length = 100)
 	private String password;
 
-	@Column(length = 50)
+	@Column(nullable = false, length = 50)
 	private String nickname;
 
 	private boolean activated;

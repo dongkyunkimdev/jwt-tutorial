@@ -14,14 +14,13 @@ public class JwtService {
 	private final TokenProvider tokenProvider;
 	private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
-	public String getJwt(LoginDto loginDto) {
+	public String getJwt(LoginDto loginDto, EnumToken token) {
 		UsernamePasswordAuthenticationToken authenticationToken =
 			new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
 
 		Authentication authentication = authenticationManagerBuilder.getObject()
 			.authenticate(authenticationToken);
 
-		String jwt = tokenProvider.createToken(authentication);
-		return jwt;
+		return tokenProvider.createToken(authentication, token);
 	}
 }

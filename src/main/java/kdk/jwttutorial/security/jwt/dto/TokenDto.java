@@ -9,10 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TokenDto {
 
-	private String token;
+	private String accessToken;
+	private String refreshToken;
 
 	@Builder
-	public TokenDto(String token) {
-		this.token = token;
+	public TokenDto(String accessToken, String refreshToken) {
+		this.accessToken = accessToken;
+		this.refreshToken = refreshToken;
 	}
 }

@@ -2,9 +2,10 @@ package kdk.jwttutorial.user;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import kdk.jwttutorial.security.jwt.dto.TokenDto;
+import kdk.jwttutorial.security.jwt.EnumToken;
 import kdk.jwttutorial.security.jwt.JwtFilter;
 import kdk.jwttutorial.security.jwt.JwtService;
+import kdk.jwttutorial.security.jwt.dto.TokenDto;
 import kdk.jwttutorial.user.dto.LoginDto;
 import kdk.jwttutorial.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
@@ -27,15 +28,18 @@ public class UserController {
 	private final JwtService jwtService;
 
 	@PostMapping("/login")
-	public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto) {
-		String jwt = jwtService.getJwt(loginDto);
+	public ResponseEntity<TokenDto> login(@Valid @RequestBody LoginDto loginDto) {
+		String accessToken = jwtService.getJwt(loginDto, EnumToken.ACCESS);
+		String refreshToken = jwtService.getJwt(loginDto, EnumToken.REFRESH);
 		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+		httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + accessToken);
+		httpHeaders.add(JwtFilter.REFRESH_HEADER, "Bearer " + refreshToken);
 
 		return ResponseEntity.ok()
 			.headers(httpHeaders)
 			.body(TokenDto.builder()
-				.token(jwt)
+				.accessToken(accessToken)
+				.refreshToken(refreshToken)
 				.build()
 			);
 	}
