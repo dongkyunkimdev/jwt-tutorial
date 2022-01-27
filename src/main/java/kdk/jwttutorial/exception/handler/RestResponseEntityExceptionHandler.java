@@ -15,9 +15,12 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@ResponseStatus(CONFLICT)
-	@ExceptionHandler(value = { DuplicateMemberException.class })
+	@ExceptionHandler(value = {DuplicateMemberException.class})
 	@ResponseBody
 	protected ErrorDto badRequest(RuntimeException ex, WebRequest request) {
-		return new ErrorDto(CONFLICT.value(), ex.getMessage());
+		return ErrorDto.builder()
+			.status(CONFLICT.value())
+			.message(ex.getMessage())
+			.build();
 	}
 }

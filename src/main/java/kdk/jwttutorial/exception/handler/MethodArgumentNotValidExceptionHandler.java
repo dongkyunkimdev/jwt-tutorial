@@ -28,10 +28,14 @@ public class MethodArgumentNotValidExceptionHandler {
 	}
 
 	private ErrorDto processFieldErrors(List<FieldError> fieldErrors) {
-		ErrorDto errorDTO = new ErrorDto(BAD_REQUEST.value(), "@Valid Error");
-		for (FieldError fieldError: fieldErrors) {
+		ErrorDto errorDTO = ErrorDto.builder()
+			.status(BAD_REQUEST.value())
+			.message("@Valid Error")
+			.build();
+		for (FieldError fieldError : fieldErrors) {
 			errorDTO.addFieldError(fieldError.getField(), fieldError.getDefaultMessage());
 		}
+
 		return errorDTO;
 	}
 }
