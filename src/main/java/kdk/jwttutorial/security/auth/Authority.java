@@ -1,4 +1,4 @@
-package kdk.jwttutorial.auth;
+package kdk.jwttutorial.security.auth;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

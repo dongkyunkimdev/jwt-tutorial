@@ -24,13 +24,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
 		return userRepository.findOneWithAuthoritiesByEmail(username)
 			.map(user -> createUser(username, user))
-			.orElseThrow(() -> new UsernameNotFoundException(username + " -> 데이터베이스에서 찾을 수 없습니다."));
+			.orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자입니다."));
 	}
 
 	private org.springframework.security.core.userdetails.User createUser(String username,
 		User user) {
 		if (!user.isActivated()) {
-			throw new RuntimeException(username + " -> 활성화되어 있지 않습니다.");
+			throw new RuntimeException("활성화되어 있지 않습니다.");
 		}
 		List<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
 			.map(authority -> new SimpleGrantedAuthority(authority.getAuthorityName()))

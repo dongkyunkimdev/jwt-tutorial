@@ -2,7 +2,7 @@ package kdk.jwttutorial.user;
 
 import java.util.Collections;
 import kdk.jwttutorial.user.dto.UserDto;
-import kdk.jwttutorial.auth.Authority;
+import kdk.jwttutorial.security.auth.Authority;
 import kdk.jwttutorial.exception.DuplicateMemberException;
 import kdk.jwttutorial.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;

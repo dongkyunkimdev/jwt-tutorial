@@ -1,16 +1,18 @@
-package kdk.jwttutorial.auth.dto;
+package kdk.jwttutorial.security.auth.dto;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@Builder
 public class AuthorityDto {
 
 	private String authorityName;
+
+	@Builder
+	public AuthorityDto(String authorityName) {
+		this.authorityName = authorityName;
+	}
 }

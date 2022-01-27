@@ -1,4 +1,4 @@
-package kdk.jwttutorial.security;
+package kdk.jwttutorial.security.jwt;
 
 import java.io.IOException;
 import javax.servlet.ServletException;

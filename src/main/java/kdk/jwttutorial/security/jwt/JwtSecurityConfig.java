@@ -1,4 +1,4 @@
-package kdk.jwttutorial.security;
+package kdk.jwttutorial.security.jwt;
 
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

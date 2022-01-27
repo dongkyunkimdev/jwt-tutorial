@@ -1,4 +1,4 @@
-package kdk.jwttutorial.security;
+package kdk.jwttutorial.security.jwt;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -15,6 +15,6 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 		AuthenticationException authException) throws IOException, ServletException {
 		// 유효한 자격증명을 제공하지 않고 접근하려 할때 401
-		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage());
+		response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 	}
 }
