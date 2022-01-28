@@ -34,8 +34,6 @@ public class User {
 	@Column(nullable = false, length = 50)
 	private String nickname;
 
-	private boolean activated;
-
 	@ManyToMany
 	@JoinTable(
 		name = "user_authority",
@@ -45,13 +43,12 @@ public class User {
 	private Set<Authority> authorities;
 
 	@Builder
-	public User(Long userId, String username, String password, String nickname, boolean activated,
+	public User(Long userId, String username, String password, String nickname,
 		Set<Authority> authorities) {
 		this.userId = userId;
 		this.email = username;
 		this.password = password;
 		this.nickname = nickname;
-		this.activated = activated;
 		this.authorities = authorities;
 	}
 }

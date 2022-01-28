@@ -1,10 +1,11 @@
 package kdk.jwttutorial.user;
 
 import java.util.Collections;
-import kdk.jwttutorial.exception.DuplicateMemberException;
+import kdk.jwttutorial.error.ErrorCode;
 import kdk.jwttutorial.security.SecurityUtil;
 import kdk.jwttutorial.security.auth.Authority;
 import kdk.jwttutorial.user.dto.UserDto;
+import kdk.jwttutorial.user.exception.EmailAlreadyUseException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,7 +23,7 @@ public class UserService {
 	public UserDto signup(UserDto userDto) {
 		if (userRepository.findOneWithAuthoritiesByEmail(userDto.getEmail()).orElse(null)
 			!= null) {
-			throw new DuplicateMemberException("이미 가입되어 있는 유저입니다: " + userDto.getEmail());
+			throw new EmailAlreadyUseException(ErrorCode.EMAIL_DUPLICATION.getMessage());
 		}
 
 		Authority authority = Authority.builder()
@@ -34,7 +35,6 @@ public class UserService {
 			.password(passwordEncoder.encode(userDto.getPassword()))
 			.nickname(userDto.getNickname())
 			.authorities(Collections.singleton(authority))
-			.activated(true)
 			.build();
 
 		return UserDto.from(userRepository.save(user));
@@ -42,19 +42,23 @@ public class UserService {
 
 	@Transactional(readOnly = true)
 	public UserDto getUserWithAuthorities(String username) {
-		return UserDto.from(userRepository.findOneWithAuthoritiesByEmail(username).orElse(null));
+		return UserDto.from(userRepository.findOneWithAuthoritiesByEmail(username).orElseThrow(
+			() -> new UsernameNotFoundException(ErrorCode.USER_NOT_FOUND.getMessage()))
+		);
 	}
 
 	@Transactional(readOnly = true)
 	public UserDto getMyUserWithAuthorities() {
 		return UserDto.from(SecurityUtil.getCurrentUsername()
-			.flatMap(userRepository::findOneWithAuthoritiesByEmail).orElse(null));
+			.flatMap(userRepository::findOneWithAuthoritiesByEmail).orElseThrow(
+				() -> new UsernameNotFoundException(ErrorCode.USER_NOT_FOUND.getMessage()))
+		);
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public User getUser(String email) {
 		return userRepository.findOneWithAuthoritiesByEmail(email).orElseThrow(
-			() -> new UsernameNotFoundException("존재하지 않는 사용자입니다.")
+			() -> new UsernameNotFoundException(ErrorCode.USER_NOT_FOUND.getMessage())
 		);
 	}
 

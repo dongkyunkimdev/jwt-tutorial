@@ -15,6 +15,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletRequest;
+import kdk.jwttutorial.error.ErrorCode;
 import kdk.jwttutorial.security.auth.Authority;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.InitializingBean;
@@ -125,18 +127,22 @@ public class TokenProvider implements InitializingBean {
 		return new UsernamePasswordAuthenticationToken(principal, token, authorities);
 	}
 
-	public boolean validateToken(String token) {
+	public boolean validateToken(HttpServletRequest request, String token) {
 		try {
 			Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
 			return true;
 		} catch (SecurityException | MalformedJwtException e) {
-			log.info("잘못된 JWT 서명입니다.");
+			log.info(ErrorCode.INCORRECT_SIGNATURE.getMessage());
+			request.setAttribute("exception", ErrorCode.INCORRECT_SIGNATURE.getCode());
 		} catch (ExpiredJwtException e) {
-			log.info("만료된 JWT 토큰입니다.");
+			log.info(ErrorCode.EXPIRED_TOKEN.getMessage());
+			request.setAttribute("exception", ErrorCode.EXPIRED_TOKEN.getCode());
 		} catch (UnsupportedJwtException e) {
-			log.info("지원되지 않는 JWT 토큰입니다.");
+			log.info(ErrorCode.UNSUPPORTED_TOKEN.getMessage());
+			request.setAttribute("exception", ErrorCode.UNSUPPORTED_TOKEN.getCode());
 		} catch (IllegalArgumentException e) {
-			log.info("JWT 토큰이 잘못되었습니다.");
+			log.info(ErrorCode.INVALID_TOKEN.getMessage());
+			request.setAttribute("exception", ErrorCode.INVALID_TOKEN.getCode());
 		}
 		return false;
 	}

@@ -3,6 +3,7 @@ package kdk.jwttutorial.security;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
+import kdk.jwttutorial.error.ErrorCode;
 import kdk.jwttutorial.user.User;
 import kdk.jwttutorial.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,15 +24,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Transactional
 	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
 		return userRepository.findOneWithAuthoritiesByEmail(username)
-			.map(user -> createUser(username, user))
-			.orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자입니다."));
+			.map(this::createUser)
+			.orElseThrow(() -> new UsernameNotFoundException(ErrorCode.USER_NOT_FOUND.getMessage()));
 	}
 
-	private org.springframework.security.core.userdetails.User createUser(String username,
-		User user) {
-		if (!user.isActivated()) {
-			throw new RuntimeException("활성화되어 있지 않습니다.");
-		}
+	private org.springframework.security.core.userdetails.User createUser(User user) {
 		List<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
 			.map(authority -> new SimpleGrantedAuthority(authority.getAuthorityName()))
 			.collect(Collectors.toList());

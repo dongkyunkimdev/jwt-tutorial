@@ -2,7 +2,9 @@ package kdk.jwttutorial.security.jwt;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import kdk.jwttutorial.error.ErrorCode;
 import kdk.jwttutorial.security.jwt.dto.TokenDto;
+import kdk.jwttutorial.security.jwt.exception.InvalidTokenException;
 import kdk.jwttutorial.user.User;
 import kdk.jwttutorial.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -23,19 +25,14 @@ public class TokenController {
 	private final TokenProvider tokenProvider;
 	private final UserService userService;
 
-	// 리프레시 토큰을 받음
-	// 리프레시 토큰이 없거나, Bearer로 시작하지 않는다면 exception
-	// 리프레시 토큰의 subject를 가져옴(email)
-	// User 객체를 getByEmail
-	// access_token을 다시 만들어서 리프레시 토큰과 함께 response
 	@GetMapping("/refresh")
 	public ResponseEntity<TokenDto> refreshToken(HttpServletRequest request, HttpServletResponse response) {
 		String refreshToken = request.getHeader(JwtFilter.REFRESH_HEADER);
 		if (StringUtils.hasText(refreshToken) && refreshToken.startsWith("Bearer ")) {
 			refreshToken = refreshToken.substring(7);
 		}
-		if (!StringUtils.hasText(refreshToken) || !tokenProvider.validateToken(refreshToken)) {
-			throw new RuntimeException("Refresh token is missing");
+		if (!StringUtils.hasText(refreshToken) || !tokenProvider.validateToken(request, refreshToken)) {
+			throw new InvalidTokenException(ErrorCode.INVALID_TOKEN.getMessage());
 		}
 
 		User user = userService.getUser(tokenProvider.getSubject(refreshToken));
