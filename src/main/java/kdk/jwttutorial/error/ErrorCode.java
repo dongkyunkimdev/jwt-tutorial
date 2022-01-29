@@ -28,7 +28,7 @@ public enum ErrorCode {
 	UNKNOWN_TOKEN(401, "A005", "알 수 없는 오류입니다"),
 
 	// Login
-	INVALID_PASSWORD(400, "L001", "비밀번호가 일치하지 않습니다.");
+	INVALID_ACCOUNT(400, "L001", "계정 정보가 일치하지 않습니다.");
 
 	private int status;
 	private final String code;

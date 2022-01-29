@@ -137,9 +137,9 @@ public class GlobalExceptionHandler {
 	protected ResponseEntity<ErrorResponse> handleBadCredentialsException(
 		BadCredentialsException e) {
 		log.error("handleBadCredentialsException", e);
-		final ErrorResponse response = ErrorResponse.of(ErrorCode.INVALID_PASSWORD);
+		final ErrorResponse response = ErrorResponse.of(ErrorCode.INVALID_ACCOUNT);
 		return new ResponseEntity<>(response,
-			HttpStatus.valueOf(ErrorCode.INVALID_PASSWORD.getStatus()));
+			HttpStatus.valueOf(ErrorCode.INVALID_ACCOUNT.getStatus()));
 	}
 
 }
