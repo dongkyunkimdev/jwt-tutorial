@@ -17,7 +17,8 @@ import java.util.Date;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import kdk.jwttutorial.error.ErrorCode;
-import kdk.jwttutorial.security.auth.Authority;
+import kdk.jwttutorial.security.auth.dto.AuthorityDto;
+import kdk.jwttutorial.user.dto.UserDto;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
@@ -83,9 +84,9 @@ public class TokenProvider implements InitializingBean {
 			.compact();
 	}
 
-	public String createToken(kdk.jwttutorial.user.User user, EnumToken token) {
-		String authorities = user.getAuthorities().stream()
-			.map(Authority::getAuthorityName).collect(Collectors.joining(","));
+	public String createToken(UserDto userDto, EnumToken token) {
+		String authorities = userDto.getAuthorityDtoSet().stream()
+			.map(AuthorityDto::getAuthorityName).collect(Collectors.joining(","));
 
 		long now = (new Date()).getTime();
 		Date validity;
@@ -102,7 +103,7 @@ public class TokenProvider implements InitializingBean {
 		return builder
 			.setHeaderParam("typ", "JWT")
 			.setIssuer(ISSUER)
-			.setSubject(user.getEmail())
+			.setSubject(userDto.getEmail())
 			.signWith(key, SignatureAlgorithm.HS512)
 			.setExpiration(validity)
 			.setIssuedAt(new Date())

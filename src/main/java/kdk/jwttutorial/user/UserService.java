@@ -44,8 +44,8 @@ public class UserService {
 	}
 
 	@Transactional(readOnly = true)
-	public UserDto getUserWithAuthorities(String username) {
-		return UserDto.from(userRepository.findOneWithAuthoritiesByEmail(username).orElseThrow(
+	public UserDto getUserWithAuthorities(String email) {
+		return UserDto.from(userRepository.findOneWithAuthoritiesByEmail(email).orElseThrow(
 			() -> new UsernameNotFoundException(ErrorCode.USER_NOT_FOUND.getMessage()))
 		);
 	}
@@ -55,13 +55,6 @@ public class UserService {
 		return UserDto.from(SecurityUtil.getCurrentUsername()
 			.flatMap(userRepository::findOneWithAuthoritiesByEmail).orElseThrow(
 				() -> new UsernameNotFoundException(ErrorCode.USER_NOT_FOUND.getMessage()))
-		);
-	}
-
-	@Transactional(readOnly = true)
-	public User getUser(String email) {
-		return userRepository.findOneWithAuthoritiesByEmail(email).orElseThrow(
-			() -> new UsernameNotFoundException(ErrorCode.USER_NOT_FOUND.getMessage())
 		);
 	}
 

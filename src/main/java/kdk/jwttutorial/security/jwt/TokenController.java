@@ -5,8 +5,8 @@ import javax.servlet.http.HttpServletResponse;
 import kdk.jwttutorial.error.ErrorCode;
 import kdk.jwttutorial.security.jwt.dto.TokenDto;
 import kdk.jwttutorial.security.jwt.exception.InvalidTokenException;
-import kdk.jwttutorial.user.User;
 import kdk.jwttutorial.user.UserService;
+import kdk.jwttutorial.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpHeaders;
@@ -35,8 +35,8 @@ public class TokenController {
 			throw new InvalidTokenException(ErrorCode.INVALID_TOKEN.getMessage());
 		}
 
-		User user = userService.getUser(tokenProvider.getSubject(refreshToken));
-		String accessToken = tokenProvider.createToken(user, EnumToken.ACCESS);
+		UserDto userDto = userService.getUserWithAuthorities(tokenProvider.getSubject(refreshToken));
+		String accessToken = tokenProvider.createToken(userDto, EnumToken.ACCESS);
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + accessToken);
 		httpHeaders.add(JwtFilter.REFRESH_HEADER, "Bearer " + refreshToken);
