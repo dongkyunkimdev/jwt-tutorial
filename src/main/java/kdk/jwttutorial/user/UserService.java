@@ -21,23 +21,23 @@ public class UserService {
 
 	@Transactional
 	public UserDto signup(UserDto userDto) {
+		validDuplEmail(userDto);
+
+		User user = User.builder()
+			.email(userDto.getEmail())
+			.password(passwordEncoder.encode(userDto.getPassword()))
+			.nickname(userDto.getNickname())
+			.authorities(Collections.singleton(Authority.createUserRole()))
+			.build();
+
+		return UserDto.from(userRepository.save(user));
+	}
+
+	private void validDuplEmail(UserDto userDto) {
 		if (userRepository.findOneWithAuthoritiesByEmail(userDto.getEmail()).orElse(null)
 			!= null) {
 			throw new EmailAlreadyUseException(ErrorCode.EMAIL_DUPLICATION.getMessage());
 		}
-
-		Authority authority = Authority.builder()
-			.authorityName(EnumAuthority.ROLE_USER.name())
-			.build();
-
-		User user = User.builder()
-			.username(userDto.getEmail())
-			.password(passwordEncoder.encode(userDto.getPassword()))
-			.nickname(userDto.getNickname())
-			.authorities(Collections.singleton(authority))
-			.build();
-
-		return UserDto.from(userRepository.save(user));
 	}
 
 	@Transactional(readOnly = true)
