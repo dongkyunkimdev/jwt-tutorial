@@ -1,6 +1,8 @@
 package kdk.jwttutorial.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collections;
 import kdk.jwttutorial.security.auth.Authority;
@@ -66,7 +68,7 @@ class UserRepositoryTest {
 		boolean result = userRepository.existsByEmail(user.getEmail());
 
 		// then
-		assertThat(true).isSameAs(result);
+		assertTrue(result);
 	}
 
 	@Test
@@ -78,7 +80,7 @@ class UserRepositoryTest {
 		boolean result = userRepository.existsByEmail(user.getEmail());
 
 		// then
-		assertThat(false).isSameAs(result);
+		assertFalse(result);
 	}
 
 	private User createUser(String email, String password, String nickname) {
