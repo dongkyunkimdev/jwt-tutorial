@@ -10,15 +10,12 @@ import javax.validation.constraints.Size;
 import kdk.jwttutorial.security.auth.dto.AuthorityDto;
 import kdk.jwttutorial.user.User;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@Builder
 public class UserDto {
 
 	@NotNull
@@ -37,13 +34,29 @@ public class UserDto {
 
 	private Set<AuthorityDto> authorityDtoSet;
 
+	@Builder
+	public UserDto(
+		@NotNull @Size(min = 3, max = 100) @Email String email,
+		@NotNull @Size(min = 3, max = 100) String password,
+		@NotNull @Size(min = 3, max = 50) String nickname,
+		Set<AuthorityDto> authorityDtoSet) {
+		this.email = email;
+		this.password = password;
+		this.nickname = nickname;
+		this.authorityDtoSet = authorityDtoSet;
+	}
+
 	public static UserDto from(User user) {
 		return UserDto.builder()
 			.email(user.getEmail())
 			.nickname(user.getNickname())
-			.authorityDtoSet(user.getAuthorities().stream()
-				.map(authority -> AuthorityDto.builder().authorityName(authority.getAuthorityName())
-					.build())
-				.collect(Collectors.toSet())).build();
+			.authorityDtoSet(
+				user.getAuthorities().stream().map(
+					authority -> AuthorityDto.builder()
+						.authorityName(authority.getAuthorityName())
+						.build()
+				)
+					.collect(Collectors.toSet())
+			).build();
 	}
 }

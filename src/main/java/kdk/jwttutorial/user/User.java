@@ -43,10 +43,10 @@ public class User {
 	private Set<Authority> authorities;
 
 	@Builder
-	public User(Long userId, String username, String password, String nickname,
+	public User(Long userId, String email, String password, String nickname,
 		Set<Authority> authorities) {
 		this.userId = userId;
-		this.email = username;
+		this.email = email;
 		this.password = password;
 		this.nickname = nickname;
 		this.authorities = authorities;
