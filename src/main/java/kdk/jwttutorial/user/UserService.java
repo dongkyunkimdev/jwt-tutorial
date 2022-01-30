@@ -34,8 +34,7 @@ public class UserService {
 	}
 
 	private void validDuplEmail(UserDto userDto) {
-		if (userRepository.findOneWithAuthoritiesByEmail(userDto.getEmail()).orElse(null)
-			!= null) {
+		if (userRepository.existsByEmail(userDto.getEmail())) {
 			throw new EmailAlreadyUseException(ErrorCode.EMAIL_DUPLICATION.getMessage());
 		}
 	}
