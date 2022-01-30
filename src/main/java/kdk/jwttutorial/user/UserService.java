@@ -23,14 +23,18 @@ public class UserService {
 	public UserDto signup(UserDto userDto) {
 		validDuplEmail(userDto);
 
-		User user = User.builder()
+		User user = createUser(userDto);
+
+		return UserDto.from(userRepository.save(user));
+	}
+
+	private User createUser(UserDto userDto) {
+		return User.builder()
 			.email(userDto.getEmail())
 			.password(passwordEncoder.encode(userDto.getPassword()))
 			.nickname(userDto.getNickname())
 			.authorities(Collections.singleton(Authority.createUserRole()))
 			.build();
-
-		return UserDto.from(userRepository.save(user));
 	}
 
 	private void validDuplEmail(UserDto userDto) {
