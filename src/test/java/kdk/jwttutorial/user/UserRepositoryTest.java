@@ -59,7 +59,7 @@ class UserRepositoryTest {
 	}
 
 	@Test
-	void 사용자가_존재함() {
+	void 사용자가_존재_True() {
 		// given
 		User user = createUser("test1@test.com", "password", "test1");
 		userRepository.save(user);
@@ -72,7 +72,7 @@ class UserRepositoryTest {
 	}
 
 	@Test
-	void 사용자가_존재하지_않음() {
+	void 사용자가_존재_False() {
 		// given
 		User user = createUser("test1@test.com", "password", "test1");
 
