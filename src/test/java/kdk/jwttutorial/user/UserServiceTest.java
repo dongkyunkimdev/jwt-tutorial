@@ -7,6 +7,7 @@ import java.util.Collections;
 import kdk.jwttutorial.error.ErrorCode;
 import kdk.jwttutorial.security.auth.Authority;
 import kdk.jwttutorial.user.dto.UserDto;
+import kdk.jwttutorial.user.exception.EmailAlreadyUseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,7 +36,7 @@ class UserServiceTest {
 	}
 
 	@Test
-	void 회원가입() {
+	void 회원가입_성공() {
 		// given
 		UserDto userDto = createUserDto("test1@test.com", "password", "test1");
 
@@ -47,6 +48,20 @@ class UserServiceTest {
 		assertThat(userDto.getNickname()).isEqualTo(result.getNickname());
 		assertThat(EnumAuthority.ROLE_USER.name())
 			.isEqualTo(result.getAuthorityDtoSet().iterator().next().getAuthorityName());
+	}
+
+	@Test
+	void 회원가입_예외_이메일_중복되는_경우() {
+		// given
+		userRepository.save(createUser("test1@test.com", "password", "test1"));
+		UserDto userDto = createUserDto("test1@test.com", "password", "test1");
+
+		// when
+		EmailAlreadyUseException e = assertThrows(
+			EmailAlreadyUseException.class, () -> userService.signup(userDto));
+
+		// then
+		assertThat(e.getMessage()).isEqualTo(ErrorCode.EMAIL_DUPLICATION.getMessage());
 	}
 
 	@Test
@@ -79,37 +94,8 @@ class UserServiceTest {
 	}
 
 	@Test
-	void 특정_사용자_정보_가져오기_성공() {
-		// given
-		User user = createUser("test1@test.com", "password", "test1");
-		userRepository.save(user);
-
-		// when
-		UserDto result = userService.getUserWithAuthorities(user.getEmail());
-
-		// then
-		assertThat(user.getEmail()).isEqualTo(result.getEmail());
-		assertThat(user.getNickname()).isEqualTo(result.getNickname());
-		assertThat(user.getAuthorities().iterator().next().getAuthorityName())
-			.isEqualTo(result.getAuthorityDtoSet().iterator().next().getAuthorityName());
-	}
-
-	@Test
-	void 특정_사용자_정보_가져오기_예외_DB에_없는경우() {
-		// given
-		User user = createUser("test1@test.com", "password", "test1");
-
-		// when
-		UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class,
-			() -> userService.getUserWithAuthorities(user.getEmail()));
-
-		// then
-		assertThat(e.getMessage()).isEqualTo(ErrorCode.USER_NOT_FOUND.getMessage());
-	}
-
-	@Test
 	@WithMockUser(username = "test1@test.com", authorities = {"ROLE_USER"})
-	void 내_정보_가져오기_성공() {
+	void 내_정보_조회_성공() {
 		// given
 		userRepository.save(createUser("test1@test.com", "password", "test1"));
 		UserDetails springSecurityUser = (UserDetails) SecurityContextHolder.getContext()
@@ -129,7 +115,7 @@ class UserServiceTest {
 
 	@Test
 	@WithMockUser(username = "test1@test.com", authorities = {"ROLE_USER"})
-	void 내_정보_가져오기_예외_DB에_없는_경우() {
+	void 내_정보_조회_예외_DB에_존재하지_않는_경우() {
 		// given
 		UserDetails springSecurityUser = (UserDetails) SecurityContextHolder.getContext()
 			.getAuthentication()
