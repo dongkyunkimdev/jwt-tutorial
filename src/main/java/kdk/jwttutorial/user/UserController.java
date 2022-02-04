@@ -10,6 +10,7 @@ import kdk.jwttutorial.user.dto.LoginDto;
 import kdk.jwttutorial.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,7 +47,7 @@ public class UserController {
 
 	@PostMapping("/signup")
 	public ResponseEntity<UserDto> signup(@Valid @RequestBody UserDto userDto) {
-		return ResponseEntity.ok(userService.signup(userDto));
+		return ResponseEntity.status(HttpStatus.CREATED).body(userService.signup(userDto));
 	}
 
 	@GetMapping("/myInfo")
