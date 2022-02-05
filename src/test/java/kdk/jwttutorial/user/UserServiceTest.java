@@ -51,7 +51,7 @@ class UserServiceTest {
 	}
 
 	@Test
-	void 회원가입_예외_이메일_중복되는_경우() {
+	void 회원가입_예외_이메일_중복() {
 		// given
 		userRepository.save(createUser("test1@test.com", "password", "test1"));
 		UserDto userDto = createUserDto("test1@test.com", "password", "test1");
@@ -81,7 +81,7 @@ class UserServiceTest {
 	}
 
 	@Test
-	void 사용자_조회_예외_사용자가_없는_경우() {
+	void 사용자_조회_예외_사용자가_없음() {
 		// given
 		String email = "test1@test.com";
 
@@ -115,7 +115,7 @@ class UserServiceTest {
 
 	@Test
 	@WithMockUser(username = "test1@test.com", authorities = {"ROLE_USER"})
-	void 내_정보_조회_예외_DB에_존재하지_않는_경우() {
+	void 내_정보_조회_예외_DB에_존재하지_않음() {
 		// given
 		UserDetails springSecurityUser = (UserDetails) SecurityContextHolder.getContext()
 			.getAuthentication()
