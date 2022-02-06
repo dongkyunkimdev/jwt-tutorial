@@ -95,7 +95,7 @@ class UserServiceTest {
 
 	@Test
 	@WithMockUser(username = "test1@test.com", authorities = {"ROLE_USER"})
-	void 내_정보_조회_성공() {
+	void 내정보_조회_성공() {
 		// given
 		userRepository.save(createUser("test1@test.com", "password", "test1"));
 		UserDetails springSecurityUser = (UserDetails) SecurityContextHolder.getContext()
@@ -115,7 +115,7 @@ class UserServiceTest {
 
 	@Test
 	@WithMockUser(username = "test1@test.com", authorities = {"ROLE_USER"})
-	void 내_정보_조회_예외_DB에_존재하지_않음() {
+	void 내정보_조회_예외_사용자가_없음() {
 		// given
 		UserDetails springSecurityUser = (UserDetails) SecurityContextHolder.getContext()
 			.getAuthentication()

@@ -2,6 +2,8 @@ package kdk.jwttutorial.user;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -16,7 +18,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -58,9 +59,9 @@ class UserControllerTest {
 		String accessToken = "accessToken";
 		String refreshToken = "refreshToken";
 
-		BDDMockito.given(jwtService.getJwt(any(), eq(EnumToken.ACCESS)))
+		given(jwtService.getJwt(any(), eq(EnumToken.ACCESS)))
 			.willReturn(accessToken);
-		BDDMockito.given(jwtService.getJwt(any(), eq(EnumToken.REFRESH)))
+		given(jwtService.getJwt(any(), eq(EnumToken.REFRESH)))
 			.willReturn(refreshToken);
 
 		// when
@@ -118,7 +119,9 @@ class UserControllerTest {
 	void 로그인_예외_이메일_길이_초과() throws Exception {
 		// when
 		String requestUrl = "/user/login";
-		String content = convertLoginDtoJson("ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt@tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt.com", "password");
+		String content = convertLoginDtoJson(
+			"ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt@tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt.com",
+			"password");
 		ResultActions actions = postRequest(requestUrl, content);
 
 		// then
@@ -177,20 +180,9 @@ class UserControllerTest {
 	@Test
 	void 회원가입_성공() throws Exception {
 		// given
-		BDDMockito.given(userService.signup(any()))
+		given(userService.signup(any()))
 			.willReturn(
-				UserDto.builder()
-					.email("test1@test.com")
-					.password("password")
-					.nickname("test1")
-					.authorityDtoSet(
-						Collections.singleton(
-							AuthorityDto.builder()
-								.authorityName(EnumAuthority.ROLE_USER.name())
-								.build()
-						)
-					)
-					.build()
+				createUserDto("test1@test.com", "password", "test1")
 			);
 
 		// when
@@ -345,6 +337,46 @@ class UserControllerTest {
 		expectNotReadableException(actions);
 	}
 
+	@Test
+	void 내정보_조회_성공() throws Exception {
+		// given
+		given(userService.getMyUserWithAuthorities()).willReturn(
+			createUserDto("test1@test.com", "password", "test1")
+		);
+
+		// when
+		String requestUrl = "/user/myInfo";
+		ResultActions actions = getRequest(requestUrl);
+
+		// then
+		actions
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("email").value("test1@test.com"))
+			.andExpect(jsonPath("nickname").value("test1"))
+			.andExpect(jsonPath("$.authorityDtoSet[0].authorityName")
+				.value(EnumAuthority.ROLE_USER.name()));
+	}
+
+	@Test
+	void 사용자_조회_성공() throws Exception {
+		// given
+		given(userService.getUserWithAuthorities(any())).willReturn(
+			createUserDto("test1@test.com", "password", "test1")
+		);
+
+		// when
+		String requestUrl = "/user/info/test1@test.com";
+		ResultActions actions = getRequest(requestUrl);
+
+		// then
+		actions
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("email").value("test1@test.com"))
+			.andExpect(jsonPath("nickname").value("test1"))
+			.andExpect(jsonPath("$.authorityDtoSet[0].authorityName")
+				.value(EnumAuthority.ROLE_USER.name()));
+	}
+
 	private String convertUserDtoJson(String email, String password, String nickname) {
 		return String.valueOf(new StringBuffer().append("{")
 			.append(" \"email\" : \"")
@@ -399,11 +431,28 @@ class UserControllerTest {
 		);
 	}
 
-	@Test
-	void getMyUserInfo() {
+	private ResultActions getRequest(String requestUrl)
+		throws Exception {
+		return mvc.perform(
+			get(requestUrl)
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON)
+				.characterEncoding("UTF-8")
+		);
 	}
 
-	@Test
-	void getUserInfo() {
+	private UserDto createUserDto(String email, String password, String nickname) {
+		return UserDto.builder()
+			.email(email)
+			.password(password)
+			.nickname(nickname)
+			.authorityDtoSet(
+				Collections.singleton(
+					AuthorityDto.builder()
+						.authorityName(EnumAuthority.ROLE_USER.name())
+						.build()
+				)
+			)
+			.build();
 	}
 }

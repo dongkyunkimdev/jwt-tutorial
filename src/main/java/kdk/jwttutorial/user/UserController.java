@@ -1,6 +1,5 @@
 package kdk.jwttutorial.user;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import kdk.jwttutorial.security.jwt.EnumToken;
 import kdk.jwttutorial.security.jwt.JwtFilter;
@@ -52,7 +51,7 @@ public class UserController {
 
 	@GetMapping("/myInfo")
 	@PreAuthorize("hasAnyRole('USER','ADMIN')")
-	public ResponseEntity<UserDto> getMyUserInfo(HttpServletRequest request) {
+	public ResponseEntity<UserDto> getMyUserInfo() {
 		return ResponseEntity.ok(userService.getMyUserWithAuthorities());
 	}
 
