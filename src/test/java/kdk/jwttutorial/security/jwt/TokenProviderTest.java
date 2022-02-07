@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collections;
+import kdk.jwttutorial.error.ErrorCode;
 import kdk.jwttutorial.security.auth.Authority;
 import kdk.jwttutorial.security.auth.dto.AuthorityDto;
 import kdk.jwttutorial.user.EnumAuthority;
@@ -135,6 +136,33 @@ class TokenProviderTest {
 
 		// then
 		assertTrue(result);
+	}
+
+	@Test
+	void 토큰_검증_예외_유효하지않은_서명() {
+		// given
+		String incorrectToken = "eyJ0eXAOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdXRoIjoiUk9MRV9VU0VSIiwiaXNzIjoia2RrIiwic3ViIjoia2RrQGtkay5jb20iLCJleHAiOjE2NDQyMTUwNDcsImlhdCI6MTY0NDIxNDQ0N30.UfH9kKM6eSLAtQ_zIILzOUVlVEAayPCm3_exQ32n43qe5IiV4TLYFsIlgQBGP8gzLd2UmQlcTlzpdiDCY0XDsA";
+		MockHttpServletRequest request = new MockHttpServletRequest();
+
+		// when
+		tokenProvider.validateToken(request, incorrectToken);
+
+		// then
+		assertThat(request.getAttribute("exception"))
+			.isEqualTo(ErrorCode.INCORRECT_SIGNATURE.getCode());
+	}
+
+	@Test
+	void 토큰_검증_예외_만료됨() {
+		// given
+		String expiredToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdXRoIjoiUk9MRV9VU0VSIiwiaXNzIjoia2RrIiwic3ViIjoia2RrQGtkay5jb20iLCJleHAiOjE2NDQyMTUwNDcsImlhdCI6MTY0NDIxNDQ0N30.UfH9kKM6eSLAtQ_zIILzOUVlVEAayPCm3_exQ32n43qe5IiV4TLYFsIlgQBGP8gzLd2UmQlcTlzpdiDCY0XDsA";
+		MockHttpServletRequest request = new MockHttpServletRequest();
+
+		// when
+		tokenProvider.validateToken(request, expiredToken);
+
+		// then
+		assertThat(request.getAttribute("exception")).isEqualTo(ErrorCode.EXPIRED_TOKEN.getCode());
 	}
 
 	@Test
