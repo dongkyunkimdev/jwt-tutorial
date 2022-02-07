@@ -1,5 +1,6 @@
 package kdk.jwttutorial.user;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
@@ -14,7 +15,6 @@ import kdk.jwttutorial.security.jwt.EnumToken;
 import kdk.jwttutorial.security.jwt.JwtFilter;
 import kdk.jwttutorial.security.jwt.JwtService;
 import kdk.jwttutorial.user.dto.UserDto;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -406,18 +406,16 @@ class UserControllerTest {
 	private void expectValidException(ResultActions actions) throws Exception {
 		actions
 			.andExpect(
-				(result) -> Assertions
-					.assertTrue(result.getResolvedException().getClass().isAssignableFrom(
-						MethodArgumentNotValidException.class))
+				(result) -> assertTrue(result.getResolvedException().getClass().isAssignableFrom(
+					MethodArgumentNotValidException.class))
 			);
 	}
 
 	private void expectNotReadableException(ResultActions actions) throws Exception {
 		actions
 			.andExpect(
-				(result) -> Assertions
-					.assertTrue(result.getResolvedException().getClass().isAssignableFrom(
-						HttpMessageNotReadableException.class))
+				(result) -> assertTrue(result.getResolvedException().getClass().isAssignableFrom(
+					HttpMessageNotReadableException.class))
 			);
 	}
 

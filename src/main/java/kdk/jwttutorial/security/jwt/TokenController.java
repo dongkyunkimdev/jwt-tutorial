@@ -1,7 +1,6 @@
 package kdk.jwttutorial.security.jwt;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import kdk.jwttutorial.error.ErrorCode;
 import kdk.jwttutorial.security.jwt.dto.TokenDto;
 import kdk.jwttutorial.security.jwt.exception.InvalidTokenException;
@@ -26,7 +25,7 @@ public class TokenController {
 	private final UserService userService;
 
 	@GetMapping("/refresh")
-	public ResponseEntity<TokenDto> refreshToken(HttpServletRequest request, HttpServletResponse response) {
+	public ResponseEntity<TokenDto> refreshToken(HttpServletRequest request) {
 		String refreshToken = request.getHeader(JwtFilter.REFRESH_HEADER);
 		if (StringUtils.hasText(refreshToken) && refreshToken.startsWith("Bearer ")) {
 			refreshToken = refreshToken.substring(7);
