@@ -16,10 +16,10 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 		AuthenticationException authException) throws IOException {
-		String exception = String.valueOf(request.getAttribute("exception"));
+		String exception = (String) request.getAttribute("exception");
 
 		if (exception == null) {
-			setResponse(response, ErrorCode.UNKNOWN_TOKEN);
+			setResponse(response, ErrorCode.INVALID_TOKEN);
 		} else if (exception.equals(ErrorCode.INCORRECT_SIGNATURE.getCode())) {
 			setResponse(response, ErrorCode.INCORRECT_SIGNATURE);
 		} else if (exception.equals(ErrorCode.EXPIRED_TOKEN.getCode())) {
