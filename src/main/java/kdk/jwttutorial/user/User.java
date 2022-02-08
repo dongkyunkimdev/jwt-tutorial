@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import kdk.jwttutorial.security.auth.Authority;
+import kdk.jwttutorial.user.auth.Authority;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

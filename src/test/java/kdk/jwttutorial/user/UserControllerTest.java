@@ -10,7 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Collections;
-import kdk.jwttutorial.security.auth.dto.AuthorityDto;
+import kdk.jwttutorial.user.auth.dto.AuthorityDto;
 import kdk.jwttutorial.security.jwt.EnumToken;
 import kdk.jwttutorial.security.jwt.JwtFilter;
 import kdk.jwttutorial.security.jwt.JwtService;

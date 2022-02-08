@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collections;
 import kdk.jwttutorial.error.ErrorCode;
-import kdk.jwttutorial.security.auth.Authority;
-import kdk.jwttutorial.security.auth.dto.AuthorityDto;
+import kdk.jwttutorial.user.auth.Authority;
+import kdk.jwttutorial.user.auth.dto.AuthorityDto;
 import kdk.jwttutorial.user.EnumAuthority;
 import kdk.jwttutorial.user.User;
 import kdk.jwttutorial.user.UserRepository;

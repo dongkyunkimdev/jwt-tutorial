@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import kdk.jwttutorial.error.ErrorCode;
-import kdk.jwttutorial.security.auth.dto.AuthorityDto;
+import kdk.jwttutorial.user.auth.dto.AuthorityDto;
 import kdk.jwttutorial.user.dto.UserDto;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.InitializingBean;

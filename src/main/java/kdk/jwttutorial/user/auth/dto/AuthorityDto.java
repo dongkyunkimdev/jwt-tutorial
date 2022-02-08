@@ -1,4 +1,4 @@
-package kdk.jwttutorial.security.auth.dto;
+package kdk.jwttutorial.user.auth.dto;
 
 import lombok.AccessLevel;
 import lombok.Builder;

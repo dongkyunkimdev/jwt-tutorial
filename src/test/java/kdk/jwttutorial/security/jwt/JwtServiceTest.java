@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collections;
-import kdk.jwttutorial.security.auth.Authority;
+import kdk.jwttutorial.user.auth.Authority;
 import kdk.jwttutorial.user.User;
 import kdk.jwttutorial.user.UserRepository;
 import kdk.jwttutorial.user.dto.LoginDto;

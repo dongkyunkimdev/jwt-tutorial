@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import kdk.jwttutorial.security.auth.dto.AuthorityDto;
+import kdk.jwttutorial.user.auth.dto.AuthorityDto;
 import kdk.jwttutorial.user.User;
 import lombok.AccessLevel;
 import lombok.Builder;

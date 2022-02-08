@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Collections;
 import kdk.jwttutorial.error.ErrorCode;
-import kdk.jwttutorial.security.auth.Authority;
+import kdk.jwttutorial.user.auth.Authority;
 import kdk.jwttutorial.user.dto.UserDto;
 import kdk.jwttutorial.user.exception.EmailAlreadyUseException;
 import org.junit.jupiter.api.BeforeEach;

@@ -3,7 +3,7 @@ package kdk.jwttutorial.user;
 import java.util.Collections;
 import kdk.jwttutorial.error.ErrorCode;
 import kdk.jwttutorial.security.SecurityUtil;
-import kdk.jwttutorial.security.auth.Authority;
+import kdk.jwttutorial.user.auth.Authority;
 import kdk.jwttutorial.user.dto.UserDto;
 import kdk.jwttutorial.user.exception.EmailAlreadyUseException;
 import lombok.RequiredArgsConstructor;

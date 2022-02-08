@@ -14,7 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.Collections;
 import kdk.jwttutorial.error.ErrorCode;
-import kdk.jwttutorial.security.auth.dto.AuthorityDto;
+import kdk.jwttutorial.user.auth.dto.AuthorityDto;
 import kdk.jwttutorial.security.jwt.exception.InvalidTokenException;
 import kdk.jwttutorial.user.EnumAuthority;
 import kdk.jwttutorial.user.UserService;
