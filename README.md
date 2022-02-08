@@ -32,3 +32,6 @@ Spring Security를 이용하여 JWT 인증과 인가 및 회원가입, 로그인
     ├── build.gradle
     └── README.md
 > 도메인형 구조
+
+### 4. API 명세
+[API 명세서](https://app.swaggerhub.com/apis-docs/dongkyunkimdev/Jwt_API/1.0)
