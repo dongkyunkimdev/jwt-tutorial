@@ -1,11 +1,34 @@
 # jwt-tutorial
 ### 1. 목표
-Spring Security를 이용하여 JWT 인증과 인가 및 회원가입, 로그인 서비스를 구현
+Spring Security를 이용하여 JWT 인증과 인가 및 회원가입, 로그인 서비스를 구현하고 단위테스트, API 문서 작성
 
 ### 2. 프로젝트 환경
 - IDE : IntelliJ
 - ORM : Spring Data JPA
 - auth : Spring Security, JWT
 - DB : H2(in-memory)
+- Test : JUnit5, Mokcito
 
-[[인프런]정은구 - JWT Tutorial](https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8-jwt/dashboard) 강의를 토대로 개발하였습니다.
+### 3. 디렉토리 구조
+    ├── src
+    │   ├── main
+    |   |   ├── java
+    |   |   |   ├── kdk.jwttutorial
+    |   |   |   |   ├── error
+    |   |   |   |   |   ├── exception
+    |   |   |   |   ├── security
+    |   |   |   |   |   ├── auth
+    |   |   |   |   |   ├── jwt
+    |   |   |   |   ├── swagger
+    |   |   |   |   ├── user
+    |   |   ├── resources
+    |   |   |   ├── application.yml
+    |   |   |   ├── data.sql
+    │   ├── test
+    |   |   ├── java
+    |   |   |   ├── kdk.jwttutorial
+    |   |   |   |   ├── security
+    |   |   |   |   ├── user
+    ├── build.gradle
+    └── README.md
+> 도메인형 구조
