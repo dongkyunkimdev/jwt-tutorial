@@ -25,8 +25,7 @@ public class JwtFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
 		FilterChain chain) throws ServletException, IOException {
-		if (request.getServletPath().equals("/user/login") || request.getServletPath()
-			.equals("/user/signup") || request.getServletPath().equals("/token/refresh")) {
+		if (ignoreFilterUrl(request)) {
 			chain.doFilter(request, response);
 			return;
 		}
@@ -44,6 +43,17 @@ public class JwtFilter extends OncePerRequestFilter {
 		}
 
 		chain.doFilter(request, response);
+	}
+
+	private boolean ignoreFilterUrl(HttpServletRequest request) {
+		if (request.getServletPath().equals("/user/login") || request.getServletPath()
+			.equals("/user/signup") || request.getServletPath().equals("/token/refresh")
+			|| request.getServletPath().contains("/swagger-resource") || request.getServletPath()
+			.equals("/v3/api-docs")) {
+
+			return true;
+		}
+		return false;
 	}
 
 	private String resolveToken(HttpServletRequest request) {
