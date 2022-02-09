@@ -1,33 +1,39 @@
 package kdk.jwttutorial.user;
 
+import static java.util.Optional.ofNullable;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mockStatic;
 
 import java.util.Collections;
+import java.util.Optional;
 import kdk.jwttutorial.error.ErrorCode;
+import kdk.jwttutorial.security.SecurityUtil;
 import kdk.jwttutorial.user.auth.Authority;
 import kdk.jwttutorial.user.dto.UserDto;
 import kdk.jwttutorial.user.exception.EmailAlreadyUseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockedStatic;
+import org.mockito.MockitoAnnotations;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.test.context.support.WithMockUser;
 
-@DataJpaTest
 class UserServiceTest {
 
+	@InjectMocks
 	private UserService userService;
-	@Autowired
+	@Mock
 	private UserRepository userRepository;
 	private BCryptPasswordEncoder passwordEncoder;
 
 	@BeforeEach
 	void setUp() {
+		MockitoAnnotations.openMocks(this);
 		passwordEncoder = new BCryptPasswordEncoder();
 		userService = new UserService(userRepository, passwordEncoder);
 	}
@@ -35,7 +41,13 @@ class UserServiceTest {
 	@Test
 	void 회원가입_성공() {
 		// given
-		UserDto userDto = createUserDto("test1@test.com", "password", "test1");
+		String email = "test1@test.com";
+		String nickname = "test1";
+		given(userRepository.existsByEmail(any())).willReturn(false);
+		given(userRepository.save(any())).willReturn(
+			createUser(email, "password", nickname)
+		);
+		UserDto userDto = createUserDto(email, "password", nickname);
 
 		// when
 		UserDto result = userService.signup(userDto);
@@ -50,7 +62,7 @@ class UserServiceTest {
 	@Test
 	void 회원가입_예외_이메일_중복() {
 		// given
-		userRepository.save(createUser("test1@test.com", "password", "test1"));
+		given(userRepository.existsByEmail(any())).willReturn(true);
 		UserDto userDto = createUserDto("test1@test.com", "password", "test1");
 
 		// when
@@ -65,15 +77,18 @@ class UserServiceTest {
 	void 사용자_조회_성공() {
 		// given
 		String email = "test1@test.com";
-		User user = userRepository.save(createUser(email, "password", "test1"));
+		String nickname = "test";
+		given(userRepository.findOneWithAuthoritiesByEmail(any())).willReturn(
+			ofNullable(createUser(email, "password", nickname))
+		);
 
 		// when
 		UserDto result = userService.getUserWithAuthorities(email);
 
 		// then
-		assertThat(user.getEmail()).isEqualTo(result.getEmail());
-		assertThat(user.getNickname()).isEqualTo(result.getNickname());
-		assertThat(user.getAuthorities().iterator().next().getAuthorityName())
+		assertThat(email).isEqualTo(result.getEmail());
+		assertThat(nickname).isEqualTo(result.getNickname());
+		assertThat(Authority.createUserRole().getAuthorityName())
 			.isEqualTo(result.getAuthorityDtoSet().iterator().next().getAuthorityName());
 	}
 
@@ -81,6 +96,9 @@ class UserServiceTest {
 	void 사용자_조회_예외_사용자가_없음() {
 		// given
 		String email = "test1@test.com";
+		given(userRepository.findOneWithAuthoritiesByEmail(any())).willThrow(
+			new UsernameNotFoundException(ErrorCode.USER_NOT_FOUND.getMessage())
+		);
 
 		// when
 		UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class,
@@ -91,39 +109,49 @@ class UserServiceTest {
 	}
 
 	@Test
-	@WithMockUser(username = "test1@test.com", authorities = {"ROLE_USER"})
 	void 내정보_조회_성공() {
 		// given
-		userRepository.save(createUser("test1@test.com", "password", "test1"));
-		UserDetails springSecurityUser = (UserDetails) SecurityContextHolder.getContext()
-			.getAuthentication()
-			.getPrincipal();
-		String email = springSecurityUser.getUsername();
-		String authority = springSecurityUser.getAuthorities().iterator().next().getAuthority();
+		MockedStatic<SecurityUtil> mockSecurityUtil = mockStatic(SecurityUtil.class);
+		String email = "test1@test.com";
+		String nickname = "test1";
+		given(userRepository.findOneWithAuthoritiesByEmail(any())).willReturn(
+			ofNullable(createUser(email, "password", nickname))
+		);
+		given(SecurityUtil.getCurrentUsername()).willReturn(Optional.ofNullable(email));
 
 		// when
 		UserDto result = userService.getMyUserWithAuthorities();
 
 		// then
 		assertThat(email).isEqualTo(result.getEmail());
-		assertThat(authority)
+		assertThat(nickname).isEqualTo(result.getNickname());
+		assertThat(Authority.createUserRole().getAuthorityName())
 			.isEqualTo(result.getAuthorityDtoSet().iterator().next().getAuthorityName());
+
+		// end
+		mockSecurityUtil.close();
 	}
 
 	@Test
-	@WithMockUser(username = "test1@test.com", authorities = {"ROLE_USER"})
 	void 내정보_조회_예외_사용자가_없음() {
 		// given
-		UserDetails springSecurityUser = (UserDetails) SecurityContextHolder.getContext()
-			.getAuthentication()
-			.getPrincipal();
+		MockedStatic<SecurityUtil> mockSecurityUtil = mockStatic(SecurityUtil.class);
+		String email = "test1@test.com";
+		given(SecurityUtil.getCurrentUsername()).willReturn(Optional.ofNullable(email));
+		given(userRepository.findOneWithAuthoritiesByEmail(any())).willThrow(
+			new UsernameNotFoundException(ErrorCode.USER_NOT_FOUND.getMessage())
+		);
 
 		// when
 		UsernameNotFoundException e = assertThrows(
-			UsernameNotFoundException.class, () -> userService.getMyUserWithAuthorities());
+			UsernameNotFoundException.class, () -> userService.getMyUserWithAuthorities()
+		);
 
 		// then
 		assertThat(e.getMessage()).isEqualTo(ErrorCode.USER_NOT_FOUND.getMessage());
+
+		// end
+		mockSecurityUtil.close();
 	}
 
 	private UserDto createUserDto(String email, String password, String nickname) {
