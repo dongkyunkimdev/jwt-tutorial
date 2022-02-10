@@ -1,9 +1,6 @@
 package kdk.jwttutorial.security.jwt;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
@@ -13,11 +10,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Collections;
-import kdk.jwttutorial.error.ErrorCode;
-import kdk.jwttutorial.user.auth.dto.AuthorityDto;
 import kdk.jwttutorial.security.jwt.exception.InvalidTokenException;
 import kdk.jwttutorial.user.EnumAuthority;
 import kdk.jwttutorial.user.UserService;
+import kdk.jwttutorial.user.auth.dto.AuthorityDto;
 import kdk.jwttutorial.user.dto.UserDto;
 import org.assertj.core.api.AbstractThrowableAssert;
 import org.junit.jupiter.api.BeforeEach;
@@ -106,7 +102,7 @@ class TokenControllerTest {
 						.characterEncoding("UTF-8")
 						.header(JwtFilter.REFRESH_HEADER, "Bearer " + refreshToken)
 				)
-		).hasCause(new InvalidTokenException(ErrorCode.INVALID_TOKEN.getMessage()));
+		);
 
 		// then
 		o.getCause().isInstanceOf(InvalidTokenException.class);

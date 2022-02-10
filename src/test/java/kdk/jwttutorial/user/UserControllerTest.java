@@ -10,34 +10,35 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Collections;
-import kdk.jwttutorial.user.auth.dto.AuthorityDto;
+import kdk.jwttutorial.security.SecurityConfig;
 import kdk.jwttutorial.security.jwt.EnumToken;
 import kdk.jwttutorial.security.jwt.JwtFilter;
 import kdk.jwttutorial.security.jwt.JwtService;
+import kdk.jwttutorial.user.auth.dto.AuthorityDto;
 import kdk.jwttutorial.user.dto.UserDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
-@WebMvcTest(UserController.class)
+@WebMvcTest(controllers = UserController.class,
+	excludeFilters = {
+		@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class)
+	}
+)
 @AutoConfigureDataJpa
-@ComponentScan(basePackages = "kdk.jwttutorial.security")
-@Transactional
-@AutoConfigureTestDatabase
 class UserControllerTest {
 
 	@Autowired
