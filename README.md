@@ -13,22 +13,22 @@ Spring Security를 이용하여 JWT 인증과 인가 및 회원가입, 로그인
     ├── src
     │   ├── main
     |   |   ├── java
-    |   |   |   ├── kdk.jwttutorial
-    |   |   |   |   ├── error
-    |   |   |   |   |   └── exception
-    |   |   |   |   ├── security
-    |   |   |   |   |   └── jwt
-    |   |   |   |   ├── swagger
-    |   |   |   |   ├── user
-    |   |   |   |   |   └── auth
-    |   |   ├── resources
-    |   |   |   ├── application.yml
-    |   |   |   └── data.sql
-    │   ├── test
-    |   |   ├── java
-    |   |   |   ├── kdk.jwttutorial
-    |   |   |   |   ├── security
-    |   |   |   |   └── user
+    |   |   |   └── kdk.jwttutorial
+    |   |   |       ├── error
+    |   |   |       |   └── exception
+    |   |   |       ├── security
+    |   |   |       |   └── jwt
+    |   |   |       ├── swagger
+    |   |   |       └── user
+    |   |   |           └── auth
+    |   |   └── resources
+    |   |       ├── application.yml
+    |   |       └── data.sql
+    │   └── test
+    |       └── java
+    |           └── kdk.jwttutorial
+    |               ├── security
+    |               └── user
     ├── build.gradle
     └── README.md
 > 도메인형 구조
