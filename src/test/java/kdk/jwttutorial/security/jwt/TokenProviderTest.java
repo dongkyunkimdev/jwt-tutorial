@@ -5,26 +5,26 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collections;
 import kdk.jwttutorial.error.ErrorCode;
-import kdk.jwttutorial.user.auth.Authority;
-import kdk.jwttutorial.user.auth.dto.AuthorityDto;
 import kdk.jwttutorial.user.EnumAuthority;
 import kdk.jwttutorial.user.User;
 import kdk.jwttutorial.user.UserRepository;
+import kdk.jwttutorial.user.auth.Authority;
+import kdk.jwttutorial.user.auth.dto.AuthorityDto;
 import kdk.jwttutorial.user.dto.LoginDto;
 import kdk.jwttutorial.user.dto.UserDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
-@DataJpaTest
-@ComponentScan(basePackages = "kdk.jwttutorial.security, kdk.jwttutorial.user")
+@SpringBootTest
+@Transactional
 class TokenProviderTest {
 
 	@Autowired

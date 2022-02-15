@@ -5,21 +5,21 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Collections;
 import kdk.jwttutorial.error.ErrorCode;
-import kdk.jwttutorial.user.auth.Authority;
 import kdk.jwttutorial.user.User;
 import kdk.jwttutorial.user.UserRepository;
+import kdk.jwttutorial.user.auth.Authority;
 import kdk.jwttutorial.user.dto.UserDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
-@DataJpaTest
-@ComponentScan(basePackages = "kdk.jwttutorial.security, kdk.jwttutorial.user")
+@SpringBootTest
+@Transactional
 class CustomUserDetailsServiceTest {
 
 	@Autowired
