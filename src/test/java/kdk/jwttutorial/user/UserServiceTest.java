@@ -96,9 +96,8 @@ class UserServiceTest {
 	void 사용자_조회_예외_사용자가_없음() {
 		// given
 		String email = "test1@test.com";
-		given(userRepository.findOneWithAuthoritiesByEmail(any())).willThrow(
-			new UsernameNotFoundException(ErrorCode.USER_NOT_FOUND.getMessage())
-		);
+		given(userRepository.findOneWithAuthoritiesByEmail(any()))
+			.willReturn(Optional.ofNullable(null));
 
 		// when
 		UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class,
@@ -138,9 +137,8 @@ class UserServiceTest {
 		MockedStatic<SecurityUtil> mockSecurityUtil = mockStatic(SecurityUtil.class);
 		String email = "test1@test.com";
 		given(SecurityUtil.getCurrentUsername()).willReturn(Optional.ofNullable(email));
-		given(userRepository.findOneWithAuthoritiesByEmail(any())).willThrow(
-			new UsernameNotFoundException(ErrorCode.USER_NOT_FOUND.getMessage())
-		);
+		given(userRepository.findOneWithAuthoritiesByEmail(any()))
+			.willReturn(Optional.ofNullable(null));
 
 		// when
 		UsernameNotFoundException e = assertThrows(
